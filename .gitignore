@@ -1,0 +1,12 @@
+# Build folders
+[Bb]in/
+[Oo]bj/
+
+# Visual Studio directory
+.vs/
+
+# Visual Studio project files
+*.sln
+*.csproj
+*.csproj.user
+*.vsconfig
