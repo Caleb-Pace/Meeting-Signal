@@ -1,0 +1,15 @@
+Apache2 instillation:
+https://www.youtube.com/watch?v=Oy52MqsWQdM&
+
+PHP tutorial:
+https://www.youtube.com/watch?v=pWBRjQBWuYA
+
+
+
+Explanation as to why php wont run GPIO commands: (Also fix)
+https://raspberrypi.stackexchange.com/a/108396
+
+
+
+Python arguments:
+https://www.tutorialspoint.com/python/python_command_line_arguments.htm
