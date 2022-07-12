@@ -1,0 +1,29 @@
+Hello World Project with Raspberry Pi Pico:
+https://projects.raspberrypi.org/en/projects/getting-started-with-the-pico/
+
+Raspberry Pi Pico pinout:
+https://peppe8o.com/raspberry-pi-pico-pinout/
+https://i0.wp.com/peppe8o.com/wp-content/uploads/2021/05/raspberry-pi-pico-pinout.jpg?w=792&ssl=1
+https://i0.wp.com/peppe8o.com/wp-content/uploads/2021/05/raspberry-pi-pico-pinout-legend.jpg?resize=256%2C294&ssl=1
+
+??? Raspberry Pi Pico with MicroPython:
+
+PyCharm with MicroPython:
+https://blog.jetbrains.com/pycharm/2018/01/micropython-plugin-for-pycharm/
+
+Raspberry Pi Pico with C++:
+https://shawnhymel.com/2096/how-to-set-up-raspberry-pi-pico-c-c-toolchain-on-windows-with-vs-code/
+https://github.com/raspberrypi/pico-examples/issues/56
+
+https://www.youtube.com/watch?v=B5rQSoOmR5w&t
+
+Bluetooth tutorial:
+https://www.youtube.com/watch?v=MV7EUEoc9dI
+
+(Working)
+https://circuitdigest.com/microcontroller-projects/how-to-use-bluetooth-on-raspberry-pi-pico-and-control-led-using-mobile
+https://docs.micropython.org/en/latest/rp2/quickref.html
+
+TEMP:
+https://github.com/micropython/micropython/blob/master/examples/bluetooth/ble_advertising.py
+https://www.youtube.com/watch?v=1i-6cz4KHXE
