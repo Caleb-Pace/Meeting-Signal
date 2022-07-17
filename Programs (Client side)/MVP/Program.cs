@@ -11,7 +11,11 @@ namespace MVP
 
         private static readonly int detectionDelay = 1000; // In milliseconds
 
-
+        // [Communication 2]
+        private static readonly HttpClient httpClient = new()
+        {
+            Timeout = new(0, 0, 100),
+        };
         // [Communication 1]
         private static bool Signal
         {
@@ -20,6 +24,8 @@ namespace MVP
                 if (_signal != value)
                 {
                     _signal = value;
+
+                    SendHttpRequest();
                     Console.WriteLine($"[Debug] Signal << {(_signal ? "1" : "0")}");
                 }
             }
@@ -76,10 +82,10 @@ namespace MVP
             {
                 // Meeting detection
                 var program = Detect_1(); // Method 1
-                //var program = Detect_2(); // Method 2
+                                          //var program = Detect_2(); // Method 2
                 var inMeeting = program != null;
 
-                if (_signal != inMeeting) 
+                if (_signal != inMeeting)
                 {
                     // Log detection
                     if (inMeeting) Console.WriteLine($"{TimeStap}<o>  Detected a {meetingPrograms[program]} meeting");
@@ -122,7 +128,11 @@ namespace MVP
         // [Communication 2]
         private static void SendSignal()
         {
+            SendHttpRequest();
             Console.WriteLine($"[Debug] Signal << {(_signal ? "1" : "0")}");
         }
+
+        // TEMP
+        private static void SendHttpRequest() => httpClient.Send(new HttpRequestMessage(HttpMethod.Get, $"http://192.168.68.82/?state={(_signal ? "1" : "0")}"));
     }
 }
