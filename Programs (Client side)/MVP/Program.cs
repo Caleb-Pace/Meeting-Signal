@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using BenchmarkDotNet.Running;
+using System.Diagnostics;
 
 namespace MVP
 {
@@ -67,38 +68,42 @@ namespace MVP
 
         public static void Main()
         {
-            // Print settings
-            var totalWidth = 17 + 5;
-            var spacer = new string(' ', totalWidth);
-            var settings = new string[]
-            {
-                ">>> [Settings]",
-                $"{"Meeting Programs:".PadLeft(totalWidth)} [\n{spacer}    \"{string.Join($"\",\n{spacer}    \"", meetingPrograms)}\"\n{spacer} ]",
-            };
-            Console.WriteLine($"{Banner}{string.Join("\n", settings)}\n\n\n>>> [Detection Log]");
+            BenchmarkRunner.Run<Benchmarking.Communication>();
+            BenchmarkRunner.Run<Benchmarking.Detection>();
 
-            // Start monitoring
-            while (true)
-            {
-                // Meeting detection
-                var program = Detect_1(); // Method 1
-                                          //var program = Detect_2(); // Method 2
-                var inMeeting = program != null;
 
-                if (_signal != inMeeting)
-                {
-                    // Log detection
-                    if (inMeeting) Console.WriteLine($"{TimeStap}<o>  Detected a {meetingPrograms[program]} meeting");
-                    else Console.WriteLine($"{TimeStap}-=-  No meetings detected!");
+            //// Print settings
+            //var totalWidth = 17 + 5;
+            //var spacer = new string(' ', totalWidth);
+            //var settings = new string[]
+            //{
+            //    ">>> [Settings]",
+            //    $"{"Meeting Programs:".PadLeft(totalWidth)} [\n{spacer}    \"{string.Join($"\",\n{spacer}    \"", meetingPrograms)}\"\n{spacer} ]",
+            //};
+            //Console.WriteLine($"{Banner}{string.Join("\n", settings)}\n\n\n>>> [Detection Log]");
 
-                    // Update signal
-                    Signal = inMeeting; // Method 1
-                    //_signal = inMeeting; // Method 2
-                    //SendSignal(); // Method 2
-                }
+            //// Start monitoring
+            //while (true)
+            //{
+            //    // Meeting detection
+            //    var program = Detect_1(); // Method 1
+            //                              //var program = Detect_2(); // Method 2
+            //    var inMeeting = program != null;
 
-                Thread.Sleep(detectionDelay);
-            }
+            //    if (_signal != inMeeting)
+            //    {
+            //        // Log detection
+            //        if (inMeeting) Console.WriteLine($"{TimeStap}<o>  Detected a {meetingPrograms[program]} meeting");
+            //        else Console.WriteLine($"{TimeStap}-=-  No meetings detected!");
+
+            //        // Update signal
+            //        Signal = inMeeting; // Method 1
+            //        //_signal = inMeeting; // Method 2
+            //        //SendSignal(); // Method 2
+            //    }
+
+            //    Thread.Sleep(detectionDelay);
+            //}
         }
 
 

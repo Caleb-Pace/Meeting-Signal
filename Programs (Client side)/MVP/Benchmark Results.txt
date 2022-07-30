@@ -1,0 +1,13 @@
+|     Method |      Mean |     Error |    StdDev |    Median | Allocated |
+|----------- |----------:|----------:|----------:|----------:|----------:|
+| Property_T | 0.2272 ns | 0.0115 ns | 0.0107 ns | 0.2254 ns |         - |
+| Property_F | 0.2045 ns | 0.0093 ns | 0.0087 ns | 0.2042 ns |         - |
+|   Method_T | 0.0012 ns | 0.0027 ns | 0.0024 ns | 0.0000 ns |         - |
+|   Method_F | 0.0003 ns | 0.0010 ns | 0.0009 ns | 0.0000 ns |         - |
+
+|              Method |     Mean |     Error |    StdDev |   Gen 0 |   Gen 1 | Allocated |
+|-------------------- |---------:|----------:|----------:|--------:|--------:|----------:|
+|      SearchAll_Find | 1.243 ms | 0.0182 ms | 0.0170 ms | 31.2500 | 11.7188 |    400 KB |
+|    SearchAll_NoFind | 1.182 ms | 0.0080 ms | 0.0075 ms | 31.2500 |  9.7656 |    391 KB |
+|   TargetSearch_Find | 1.179 ms | 0.0132 ms | 0.0123 ms | 31.2500 |  9.7656 |    387 KB |
+| TargetSearch_NoFind | 1.235 ms | 0.0246 ms | 0.0230 ms | 31.2500 | 13.6719 |    395 KB |
