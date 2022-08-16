@@ -24,14 +24,17 @@ def main():
     set_colour(0, 0, 0)  # Off/Black
     sleep(1)
 
+# Set the colour of the RGB LED
 def set_colour(red, green, blue):
     pi.set_PWM_dutycycle(red_pin, adjust_value(red))
     pi.set_PWM_dutycycle(green_pin, adjust_value(green))
     pi.set_PWM_dutycycle(blue_pin, adjust_value(blue))
 
+# Invert because of common anode
 def adjust_value(colour_value):
     return 255 - colour_value
 
+# Turn LED off and release resources
 def cleanup():
     pi.write(red_pin, 1)
     pi.write(green_pin, 1)
