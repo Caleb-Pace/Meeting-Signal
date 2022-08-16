@@ -11,7 +11,10 @@ namespace MVP
 
         private static bool _signal = false;
         private static readonly string raspberryPiIP = "192.168.68.82";
-        private static readonly HttpClient httpClient = new();
+        private static readonly HttpClient httpClient = new()
+        {
+            Timeout = new(0, 0, 2), // 2 Seconds
+        };
 
         private static string TimeStap => DateTime.Now.ToString("(HH:mm:ss dd/MM/yy) >  ");
 
@@ -82,7 +85,18 @@ namespace MVP
 
                     // Update signal
                     _signal = inMeeting;
-                    httpClient.Send(new HttpRequestMessage(HttpMethod.Get, $"http://{raspberryPiIP}/?state={(_signal ? "1" : "0")}")); // Send request to Raspberry Pi
+                    try
+                    {
+                        httpClient.Send(new HttpRequestMessage(HttpMethod.Get, $"http://{raspberryPiIP}/?state={(_signal ? "1" : "0")}"));
+                    }
+                    catch (TaskCanceledException)
+                    {
+                        Console.WriteLine($"{TimeStap} !   Unable to reach {raspberryPiIP} (Timed out!)");
+                    }
+                    catch (HttpRequestException)
+                    {
+                        Console.WriteLine($"{TimeStap} !   Unable to reach {raspberryPiIP}");
+                    } // Send request to Raspberry Pi
                 }
 
                 Thread.Sleep(1000); // In milliseconds
