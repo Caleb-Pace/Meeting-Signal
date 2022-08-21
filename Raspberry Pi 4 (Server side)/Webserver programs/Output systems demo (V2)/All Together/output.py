@@ -31,17 +31,20 @@ def main():
     # RGB LED
     if len(sys.argv) > 2:
         hex_code = sys.argv[2]
-        print("<br/>\n<br/>\nHex: {0}#<br/>\n  Red: {1}<br/>\nGreen: {2}<br/>\n Blue: {3}<br/>".format(hex_code, int(hex_code[0:2], 16), int(hex_code[2:4], 16), int(hex_code[4:6], 16)))  # TEMP - Debug
+        print("<br/>\n<br/>\nHex: {}#<br/>".format(hex_code))
+        print("  Red: {0}<br/>\nGreen: {1}<br/>\n Blue: {2}<br/>".format(int(hex_code[0:2], 16), int(hex_code[2:4], 16), int(hex_code[4:6], 16)))  # TEMP - Debug
         set_colour(int(hex_code[0:2], 16), int(hex_code[2:4], 16), int(hex_code[4:6], 16))
 
     # LCD character display
     if len(sys.argv) > 3:
-        print("<br/>\n<br/>\nLCD:<br/>\n  L1: {}<br/>".format(sys.argv[3]))  # TEMP - Debug
+        line1 = sys.argv[3] if sys.argv[3] != "[CLEAR]" else ""
+        print("<br/>\n<br/>\nLCD:<br/>\n  L1: \"{0}\" (\"{1}\")<br/>".format(line1, sys.argv[3]))  # TEMP - Debug
         lcd = LCD()
-        lcd.text(sys.argv[3], 1)
+        lcd.text(line1, 1)
     if len(sys.argv) > 4:
-        print("  L2: {}<br/>".format(sys.argv[4]))  # TEMP - Debug
-        lcd.text(sys.argv[4], 2)
+        line2 = sys.argv[4] if sys.argv[4] != "[CLEAR]" else ""
+        print("  L2: {}<br/>".format(line2, sys.argv[4]))  # TEMP - Debug
+        lcd.text(line2, 2)
 
 # Set the colour of the RGB LED
 def set_colour(red, green, blue):
