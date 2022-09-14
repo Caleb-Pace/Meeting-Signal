@@ -37,13 +37,13 @@ def main():
 
     # LCD character display
     if len(sys.argv) > 3:
-        line1 = sys.argv[3] if sys.argv[3] != "[CLEAR]" else ""
+        line1 = unpack(sys.argv[3])
         print("<br/>\n<br/>\nLCD:<br/>\n  L1: \"{0}\" (\"{1}\")<br/>".format(line1, sys.argv[3]))  # TEMP - Debug
         lcd = LCD()
         lcd.text(line1, 1)
     if len(sys.argv) > 4:
-        line2 = sys.argv[4] if sys.argv[4] != "[CLEAR]" else ""
-        print("  L2: {}<br/>".format(line2, sys.argv[4]))  # TEMP - Debug
+        line2 = unpack(sys.argv[4])
+        print("  L2: \"{0}\" (\"{1}\")<br/>".format(line2, sys.argv[4]))  # TEMP - Debug
         lcd.text(line2, 2)
 
 # Set the colour of the RGB LED
@@ -55,6 +55,14 @@ def set_colour(red, green, blue):
 # Invert because of common anode
 def adjust_value(colour_value):
     return 255 - colour_value
+
+# Unpacks string to get actual values
+def unpack(input):
+    input = input.replace("/@a", "&")  # Ampersand
+    input = input.replace("/@h", "#")  # Hashtag
+    input = input.replace("/@s", " ")  # Space
+    input = input.replace("/@0", "")  # Null char
+    return input
 
 
 if __name__ == "__main__":
