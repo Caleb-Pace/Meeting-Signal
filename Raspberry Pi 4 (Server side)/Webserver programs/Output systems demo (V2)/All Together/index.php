@@ -10,11 +10,11 @@ $lcd_line_2 = empty($_GET["lcd_line_2"]) ? "/@0" : $_GET["lcd_line_2"]; // LCD c
 
 //=/ Sanitise input
 // Spaces not allowed
-str_replace(" ", "", $state);
-str_replace(" ", "", $rgb);
+$state = str_replace(" ", "", $state);
+$rgb = str_replace(" ", "", $rgb);
 // Sanitised space
-str_replace(" ", "/@s", $lcd_line_1);
-str_replace(" ", "/@s", $lcd_line_2);
+$lcd_line_1 = str_replace(" ", "/@s", $lcd_line_1);
+$lcd_line_2 = str_replace(" ", "/@s", $lcd_line_2);
 
 //=/ Run output.py and show response
 $command = "sudo python output.py ".$state." ".$rgb." ".$lcd_line_1." ".$lcd_line_2;

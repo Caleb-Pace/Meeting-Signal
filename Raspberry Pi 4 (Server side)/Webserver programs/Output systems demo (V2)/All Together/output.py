@@ -31,9 +31,19 @@ def main():
     # RGB LED
     if len(sys.argv) > 2:
         hex_code = sys.argv[2]
-        print("<br/>\n<br/>\nHex: {}#<br/>".format(hex_code))
-        print("  Red: {0}<br/>\nGreen: {1}<br/>\n Blue: {2}<br/>".format(int(hex_code[0:2], 16), int(hex_code[2:4], 16), int(hex_code[4:6], 16)))  # TEMP - Debug
-        set_colour(int(hex_code[0:2], 16), int(hex_code[2:4], 16), int(hex_code[4:6], 16))
+        print("<br/>\n<br/>\nHex: {}#<br/>".format(hex_code))  # TEMP - Debug
+
+        # Check hexcode is valid and display
+        if len(hex_code) == 6:
+            try:
+                print("  Red: {0}<br/>\nGreen: {1}<br/>\n Blue: {2}<br/>".format(int(hex_code[0:2], 16), int(hex_code[2:4], 16), int(hex_code[4:6], 16)))  # TEMP - Debug
+                set_colour(int(hex_code[0:2], 16), int(hex_code[2:4], 16), int(hex_code[4:6], 16))
+            except ValueError:
+                print("  Invalid character/s!<br/>\n    Cannot display colour<br/>\n")  # TEMP - Debug
+                set_colour(0, 0, 0) # Colour: 000000# (Off)
+        else:
+            print("  Invalid length!<br/>\n    Cannot display colour<br/>\n")  # TEMP - Debug
+            set_colour(0, 0, 0) # Colour: 000000# (Off)
 
     # LCD character display
     if len(sys.argv) > 3:
