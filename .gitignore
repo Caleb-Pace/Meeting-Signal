@@ -1,16 +1,23 @@
 ## C-Sharp
 # Build folders
-[Bb]in/
-[Oo]bj/
+**/[Bb]in/
+**/[Oo]bj/
+**/[Ll]og/
+**/[Ll]ogs/
 
 # Visual Studio directory
-.vs/
+**/.vs/
+
+# Visual Studio Code directory
+**/.vscode/
+**/[Pp]roperties/
+**/[Pp]ackages/
 
 # Visual Studio project files
-*.sln
-*.csproj
-*.csproj.user
-*.vsconfig
+**/*.sln
+**/*.csproj
+**/*.csproj.user
+**/*.vsconfig
 
 ## Python
 # PyCharm project files
