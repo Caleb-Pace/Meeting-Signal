@@ -10,7 +10,7 @@ namespace MVP
         }; // Program, Name
 
         private static bool _signal = false;
-        private static readonly string raspberryPiIP = "192.168.68.82";
+        private static readonly string raspberryPiIP = "192.168.68.73";
         private static readonly HttpClient httpClient = new()
         {
             Timeout = new(0, 0, 2), // 2 Seconds
