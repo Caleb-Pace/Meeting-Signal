@@ -20,6 +20,16 @@ namespace Additional_Monitoring_Systems
             Console.WriteLine($"\nUsing webcam: {webcam}\nUsing mic: {mic}");
         }
 
+        /// <summary>
+        /// Detects if the device is being used by specified meeting programs
+        /// </summary>
+        /// <remarks>
+        /// It detects if the device is in use by querying the Registry
+        /// </remarks>
+        /// <param name="device">"webcam" or "microphone"</param>
+        /// <returns>
+        /// <see langword="true"/> if the device is in use
+        /// </returns>
         private static bool DetectUsage(string device)
         {
             var deviceRegKey = $"Software\\Microsoft\\Windows\\CurrentVersion\\CapabilityAccessManager\\ConsentStore\\{device}\\NonPackaged\\";
