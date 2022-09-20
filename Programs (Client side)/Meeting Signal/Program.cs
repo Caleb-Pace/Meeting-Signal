@@ -21,6 +21,7 @@ namespace Meeting_Signal
             // Setup and start meeting listener
             var form = new Form1();
             MeetingDetection.IPTextBox = form.raspberryPiIPTextBox;
+            MeetingDetection.LedColourPanel = form.ledColourPanel;
             MeetingDetection.MeetingListener(); // Start asynchronous meeting listener
 
             Application.Run(form);
