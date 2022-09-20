@@ -35,7 +35,6 @@ namespace Meeting_Detector_Test
             // Check for meetings
             foreach (var process in processes)
             {
-
                 if (meetingPrograms.ContainsKey(process.ProcessName))
                 {
                     Console.WriteLine($"  \"{process.ProcessName}\"");
@@ -44,14 +43,13 @@ namespace Meeting_Detector_Test
                     foreach (var child in children)
                     {
                         Console.WriteLine($"    \"{child.ProcessName}\"");
-                        if (meetingPrograms.ContainsValue(child.ProcessName)) return true; // The known meeting program is running
+                        if (meetingPrograms.ContainsValue(child.ProcessName)) return true; // A known meeting program is running
                     }
                 }
             }
 
             return false; // No known meeting programs are running
         }
-
 
         /// <summary>
         /// Gets children of a process

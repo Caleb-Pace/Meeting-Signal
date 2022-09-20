@@ -30,19 +30,19 @@
         {
             this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
-            this.panel1 = new System.Windows.Forms.Panel();
+            this.ledColourPanel = new System.Windows.Forms.Panel();
             this.label1 = new System.Windows.Forms.Label();
-            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.raspberryPiIPTextBox = new System.Windows.Forms.TextBox();
             this.notifyIcon = new System.Windows.Forms.NotifyIcon(this.components);
             this.SuspendLayout();
             // 
-            // panel1
+            // ledColourPanel
             // 
-            this.panel1.BackColor = System.Drawing.Color.Gold;
-            this.panel1.Location = new System.Drawing.Point(149, 56);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(193, 31);
-            this.panel1.TabIndex = 0;
+            this.ledColourPanel.BackColor = System.Drawing.Color.Gold;
+            this.ledColourPanel.Location = new System.Drawing.Point(149, 56);
+            this.ledColourPanel.Name = "ledColourPanel";
+            this.ledColourPanel.Size = new System.Drawing.Size(193, 31);
+            this.ledColourPanel.TabIndex = 0;
             // 
             // label1
             // 
@@ -54,13 +54,13 @@
             this.label1.TabIndex = 0;
             this.label1.Text = "LED Colour:";
             // 
-            // textBox1
+            // raspberryPiIPTextBox
             // 
-            this.textBox1.Font = new System.Drawing.Font("Segoe UI", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBox1.Location = new System.Drawing.Point(12, 12);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(330, 38);
-            this.textBox1.TabIndex = 1;
+            this.raspberryPiIPTextBox.Font = new System.Drawing.Font("Segoe UI", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.raspberryPiIPTextBox.Location = new System.Drawing.Point(12, 12);
+            this.raspberryPiIPTextBox.Name = "raspberryPiIPTextBox";
+            this.raspberryPiIPTextBox.Size = new System.Drawing.Size(330, 38);
+            this.raspberryPiIPTextBox.TabIndex = 1;
             // 
             // notifyIcon
             // 
@@ -73,9 +73,11 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(355, 104);
-            this.Controls.Add(this.textBox1);
+            this.Controls.Add(this.raspberryPiIPTextBox);
             this.Controls.Add(this.label1);
-            this.Controls.Add(this.panel1);
+            this.Controls.Add(this.ledColourPanel);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
+            this.MaximizeBox = false;
             this.Name = "Form1";
             this.Text = "Meeting Signal";
             this.Resize += new System.EventHandler(this.Form1_Resize);
@@ -85,11 +87,10 @@
         }
 
         #endregion
-
-        private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.TextBox textBox1;
         private System.Windows.Forms.NotifyIcon notifyIcon;
+        public System.Windows.Forms.TextBox raspberryPiIPTextBox;
+        public System.Windows.Forms.Panel ledColourPanel;
     }
 }
 
