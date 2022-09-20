@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
+using System.Management;
 using System.Net.Http;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -17,11 +18,7 @@ namespace Meeting_Signal
             "C:#Users#Caleb#AppData#Local#Microsoft#Teams#current#Teams.exe",     // Teams
             "C:#Program Files#Google#Chrome#Application#chrome.exe",              // Browser
             "C:#Program Files#BraveSoftware#Brave-Browser#Application#brave.exe", // Browser (TEMP - Demo)
-        };
-        private static readonly List<string> meetingPrograms = new List<string>()
-        {
-            "Zoom Sharing Host" // Zoom
-        };
+        }; // Registry keys for meeting apps
 
         private static readonly HttpClient httpClient = new HttpClient()
         {
@@ -39,16 +36,14 @@ namespace Meeting_Signal
             while (true)
             {
                 // Check if in meeting
-                if (DetectMeeting())
+                if (DetectUsage("microphone"))
                 {
-                    IPTextBox.Text = "true";// Temp - Debug
+                    IPTextBox.Text = "true"; // Temp - Debug
                     var previousUsingWebcam = false;
-                    var previousUsingMicrophone = false;
+                    var update = true;
 
                     while (true)
                     {
-                        var update = false;
-
                         // Has using webcam state changed
                         var usingWebcam = DetectUsage("webcam");
                         if (usingWebcam != previousUsingWebcam)
@@ -57,26 +52,23 @@ namespace Meeting_Signal
                             update = true;
                         } // Update required
 
-                        // Has using microphone state changed
-                        var usingMicrophone = DetectUsage("microphone");
-                        if (usingMicrophone != previousUsingMicrophone)
-                        {
-                            previousUsingMicrophone = usingMicrophone;
-                            update = true;
-                        } // Update required
-
                         // Update signal
-                        if (update) UpdateSignal(true, usingWebcam, usingMicrophone);
+                        if (update)
+                        {
+                            UpdateSignal(SignalColour.GetColour(true, usingWebcam), usingWebcam);
+                            update = false;
+                        }
 
                         // Check for state change delay
                         await Task.Delay(TimeSpan.FromSeconds(10));
 
                         // Check if still in the meeting
-                        if (!DetectMeeting()) break; // Exit out of while loop
+                        if (!DetectUsage("microphone")) break; // Exit out of while loop
                     } // Update signal loop
-                    UpdateSignal(false, false, false);
+
+                    UpdateSignal(SignalColour.off, false);
                 } // Meeting detected!
-                else IPTextBox.Text = "false";// Temp - Debug
+                else IPTextBox.Text = "false"; // Temp - Debug
 
                 // Check for meeting delay
                 await Task.Delay(TimeSpan.FromSeconds(10));
@@ -90,19 +82,9 @@ namespace Meeting_Signal
         /// <remarks>
         /// It does this using a get request
         /// </remarks>
-        public static async void UpdateSignal(bool inMeeting, bool usingWebcam, bool usingMicrophone)
+        public static async void UpdateSignal(Color signalColour, bool usingWebcam)
         {
-            if (usingWebcam)
-            {
-                if (usingMicrophone) LedColourPanel.BackColor = Color.FromArgb(255, 255, 0, 255); // Webcam and Microphone (Purple)
-                else LedColourPanel.BackColor = Color.FromArgb(255, 0, 0, 255);                   // Webcam only (Blue)
-            } // Using webcam
-            else if (usingMicrophone) LedColourPanel.BackColor = Color.FromArgb(255, 255, 0, 0); // Microphone only (Red)
-            else
-            {
-                if (inMeeting) LedColourPanel.BackColor = Color.FromArgb(255, 255, 174, 66); // In meeting (Yellow/Orange)
-                else LedColourPanel.BackColor = Color.FromArgb(255, 0, 0, 0);               // Not in meeting (Off)
-            } // Neither
+            LedColourPanel.BackColor = signalColour;
 
             //// Temp - Add get request
             //var url = $"http://{IPTextBox.Text}/";
@@ -116,29 +98,7 @@ namespace Meeting_Signal
         }
 
 
-        //==/ Detection methods
-        /// <summary>
-        /// Detects if there is a meeting program running
-        /// </summary>
-        /// <remarks>
-        /// It does this by searching through processes for the <see cref="meetingPrograms"/>
-        /// </remarks>
-        /// <returns>
-        /// <see langword="true"/> if there is a known meeting program running
-        /// </returns>
-        public static bool DetectMeeting()
-        {
-            var processes = Process.GetProcesses();
-
-            // Check for meetings
-            foreach (var process in processes)
-            {
-                if (meetingPrograms.Contains(process.ProcessName)) return true; // The known meeting program is running
-            }
-
-            return false; // No known meeting programs are running
-        }
-
+        //==/ Detection
         /// <summary>
         /// Detects if the device is being used by specified meeting programs
         /// </summary>
@@ -177,6 +137,30 @@ namespace Meeting_Signal
         }
 
         //==/ Data structure
-        // Temp - Add colour enum
+        /// <summary>
+        /// Signal colour reference
+        /// </summary>
+        private static class SignalColour
+        {
+            public static readonly Color off = Color.FromArgb(255, 0, 0, 0);                      // Black (Off)
+            private static readonly Color onlyMicrophone = Color.FromArgb(255, 255, 0, 0);        // Red
+            private static readonly Color both = Color.FromArgb(255, 255, 0, 255);                // Purple
+
+
+            /// <summary>
+            /// Gets signal colour based on detection data
+            /// </summary>
+            public static Color GetColour(bool inMeeting, bool usingWebcam)
+            {
+                if (inMeeting)
+                {
+                    if (usingWebcam) return both;
+                    
+                    return onlyMicrophone;
+                }
+
+                return off;
+            }
+        }
     }
 }
