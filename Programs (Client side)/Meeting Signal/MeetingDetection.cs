@@ -83,18 +83,25 @@ namespace Meeting_Signal
         /// </remarks>
         public static async Task UpdateSignalAsync(Color signalColour, bool usingWebcam)
         {
-            Program.SetColour.Invoke(signalColour);
+            // Get IP
             var IP = Program.GetIP.Invoke();
             if (string.IsNullOrWhiteSpace(IP)) return; // Check if IP is blank
 
+            // Form the url
             var colour = $"{signalColour.R:x2}{signalColour.G:x2}{signalColour.B:x2}";
-            var url = $"http://{IP}/?rgb={colour}&lcd_line_1=/@s/@s/@sMic:/@sUnknown&lcd_line_2=Webcam:/@s{(usingWebcam ? "On" : "Off")}";
+            var url = $"http://{IP}/?rgb={colour}";
+            if (signalColour != SignalColour.off) url += $"&lcd_line_1=/@s/@s/@sMic:/@sUnknown&lcd_line_2=Webcam:/@s{(usingWebcam ? "On" : "Off")}"; // Add LCD data
+
+            // Send request
             try
             {
                 await httpClient.GetAsync(url);
             }
             catch (UriFormatException) { return; } // Invalid URL
             catch (TaskCanceledException) { return; } // Couldn't reach URL
+
+            // Update GUI
+            Program.SetColour.Invoke(signalColour);
         }
 
 
