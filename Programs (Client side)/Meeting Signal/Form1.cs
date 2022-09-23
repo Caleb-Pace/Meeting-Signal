@@ -8,6 +8,7 @@ namespace Meeting_Signal
         public Form1()
         {
             InitializeComponent();
+            ClientSize = new System.Drawing.Size(309, 175); // Set correct form size
         }
 
         private void Form1_Resize(object sender, EventArgs e)
