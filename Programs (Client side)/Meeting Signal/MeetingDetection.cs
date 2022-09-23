@@ -88,20 +88,16 @@ namespace Meeting_Signal
         {
             Program.SetColour.Invoke(signalColour);
             var IP = Program.GetIP.Invoke();
+            if (string.IsNullOrWhiteSpace(IP)) return; // Check if IP is blank
 
             var colour = $"{signalColour.R:x2}{signalColour.G:x2}{signalColour.B:x2}";
-            var url = $"http://{IP}/?rgb={colour}";
+            var url = $"http://{IP}/?rgb={colour}&lcd_line_1=/@s/@s/@sMic:/@sUnknown&lcd_line_2=Webcam:/@s{(usingWebcam ? "On" : "Off")}";
             try
             {
                 await httpClient.GetAsync(url);
             }
-            catch (UriFormatException)
-            {
-                return;
-            } // Invalid IP
-            //catch (HttpRequestException)
-            //{
-            //}
+            catch (UriFormatException) { return; } // Invalid URL
+            catch (TaskCanceledException) { return; } // Couldn't reach URL
         }
 
 
@@ -142,6 +138,7 @@ namespace Meeting_Signal
 
             return false; // The device is not in use by a known meeting program
         }
+
 
         //==/ Data structure
         /// <summary>
