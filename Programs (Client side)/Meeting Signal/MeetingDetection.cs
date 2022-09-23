@@ -27,11 +27,12 @@ namespace Meeting_Signal
         public static Form1 Form { get; set; }
 
 
-        // Temp - Add ///
+        /// <summary>
+        /// Manages meeting detection and signalling
+        /// </summary>
         public static void MeetingListener()
         {
             Program.SetColour = new Action<Color>(Form.SetLedColour);
-            Program.SetIP = new Action<string>(Form.SetIP);
             Program.GetIP = new Func<string>(Form.GetIP);
 
             while (true)
@@ -39,7 +40,6 @@ namespace Meeting_Signal
                 // Check if in meeting
                 if (DetectUsage("microphone"))
                 {
-                    //Program.SetIP.Invoke("true"); // Temp - Debug
                     var previousUsingWebcam = false;
                     var update = true;
 
@@ -61,8 +61,7 @@ namespace Meeting_Signal
                         }
 
                         // Check for state change delay
-                        //Thread.Sleep(TimeSpan.FromSeconds(10));
-                        Thread.Sleep(TimeSpan.FromSeconds(1)); // Temp - Debug
+                        Thread.Sleep(TimeSpan.FromSeconds(10));
 
                         // Check if still in the meeting
                         if (!DetectUsage("microphone")) break; // Exit out of while loop
@@ -70,11 +69,9 @@ namespace Meeting_Signal
 
                     UpdateSignalAsync(SignalColour.off, false).GetAwaiter().GetResult();
                 } // Meeting detected!
-                //else Program.SetIP.Invoke("false"); // Temp - Debug
 
                 // Check for meeting delay
-                //Thread.Sleep(TimeSpan.FromSeconds(10));
-                Thread.Sleep(TimeSpan.FromSeconds(1)); // Temp - Debug
+                Thread.Sleep(TimeSpan.FromSeconds(10));
             }
         }
 

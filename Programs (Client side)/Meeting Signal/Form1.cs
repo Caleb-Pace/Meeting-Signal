@@ -29,6 +29,5 @@ namespace Meeting_Signal
 
         public void SetLedColour(System.Drawing.Color newColour) => ledColourPanel.BackColor = newColour;
         public string GetIP() => raspberryPiIPTextBox.Text;
-        public void SetIP(string newText) => raspberryPiIPTextBox.Text = newText; // Temp - Debug
     }
 }
