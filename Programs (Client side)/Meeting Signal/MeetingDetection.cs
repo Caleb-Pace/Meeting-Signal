@@ -39,7 +39,7 @@ namespace Meeting_Signal
                 // Check if in meeting
                 if (DetectUsage("microphone"))
                 {
-                    Program.SetIP.Invoke("true"); // Temp - Debug
+                    //Program.SetIP.Invoke("true"); // Temp - Debug
                     var previousUsingWebcam = false;
                     var update = true;
 
@@ -68,9 +68,9 @@ namespace Meeting_Signal
                         if (!DetectUsage("microphone")) break; // Exit out of while loop
                     } // Update signal loop
 
-                    UpdateSignalAsync(SignalColour.off, false);
+                    UpdateSignalAsync(SignalColour.off, false).GetAwaiter().GetResult();
                 } // Meeting detected!
-                else Program.SetIP.Invoke("false"); // Temp - Debug
+                //else Program.SetIP.Invoke("false"); // Temp - Debug
 
                 // Check for meeting delay
                 //Thread.Sleep(TimeSpan.FromSeconds(10));
@@ -78,7 +78,6 @@ namespace Meeting_Signal
             }
         }
 
-        // Temp - Add get request
         /// <summary>
         /// Updates signal
         /// </summary>
@@ -90,15 +89,19 @@ namespace Meeting_Signal
             Program.SetColour.Invoke(signalColour);
             var IP = Program.GetIP.Invoke();
 
-            //// Temp - Add get request
-            //var url = $"http://{IPTextBox.Text}/";
-            ////var url = $"http://{IPTextBox.Text}/?";
-            ////try
-            ////{
-            //await httpClient.GetAsync(url);
-            ////} catch (HttpRequestException)
-            ////{
-            ////}
+            var colour = $"{signalColour.R:x2}{signalColour.G:x2}{signalColour.B:x2}";
+            var url = $"http://{IP}/?rgb={colour}";
+            try
+            {
+                await httpClient.GetAsync(url);
+            }
+            catch (UriFormatException)
+            {
+                return;
+            } // Invalid IP
+            //catch (HttpRequestException)
+            //{
+            //}
         }
 
 
