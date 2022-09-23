@@ -19,12 +19,16 @@ namespace Meeting_Signal
             } // Show in system tray when minimise
         }
 
-        private void notifyIcon_MouseClick(object sender, MouseEventArgs e)
+        private void NotifyIcon_MouseClick(object sender, MouseEventArgs e)
         {
             // Show
             Show();
             WindowState = FormWindowState.Normal;
             notifyIcon.Visible = false;
         }
+
+        public void SetLedColour(System.Drawing.Color newColour) => ledColourPanel.BackColor = newColour;
+        public string GetIP() => raspberryPiIPTextBox.Text;
+        public void SetIP(string newText) => raspberryPiIPTextBox.Text = newText; // Temp - Debug
     }
 }

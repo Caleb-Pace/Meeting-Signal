@@ -1,12 +1,10 @@
 ﻿using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Drawing;
-using System.Management;
 using System.Net.Http;
+using System.Threading;
 using System.Threading.Tasks;
-using System.Windows.Forms;
 
 namespace Meeting_Signal
 {
@@ -26,19 +24,22 @@ namespace Meeting_Signal
         };
 
         // Form objects
-        public static TextBox IPTextBox { get; set; }
-        public static Panel LedColourPanel { get; set; }
+        public static Form1 Form { get; set; }
 
 
         // Temp - Add ///
-        public static async void MeetingListener()
+        public static void MeetingListener()
         {
+            Program.SetColour = new Action<Color>(Form.SetLedColour);
+            Program.SetIP = new Action<string>(Form.SetIP);
+            Program.GetIP = new Func<string>(Form.GetIP);
+
             while (true)
             {
                 // Check if in meeting
                 if (DetectUsage("microphone"))
                 {
-                    IPTextBox.Text = "true"; // Temp - Debug
+                    Program.SetIP.Invoke("true"); // Temp - Debug
                     var previousUsingWebcam = false;
                     var update = true;
 
@@ -55,23 +56,25 @@ namespace Meeting_Signal
                         // Update signal
                         if (update)
                         {
-                            UpdateSignal(SignalColour.GetColour(true, usingWebcam), usingWebcam);
+                            UpdateSignalAsync(SignalColour.GetColour(true, usingWebcam), usingWebcam).GetAwaiter().GetResult();
                             update = false;
                         }
 
                         // Check for state change delay
-                        await Task.Delay(TimeSpan.FromSeconds(10));
+                        //Thread.Sleep(TimeSpan.FromSeconds(10));
+                        Thread.Sleep(TimeSpan.FromSeconds(1)); // Temp - Debug
 
                         // Check if still in the meeting
                         if (!DetectUsage("microphone")) break; // Exit out of while loop
                     } // Update signal loop
 
-                    UpdateSignal(SignalColour.off, false);
+                    UpdateSignalAsync(SignalColour.off, false);
                 } // Meeting detected!
-                else IPTextBox.Text = "false"; // Temp - Debug
+                else Program.SetIP.Invoke("false"); // Temp - Debug
 
                 // Check for meeting delay
-                await Task.Delay(TimeSpan.FromSeconds(10));
+                //Thread.Sleep(TimeSpan.FromSeconds(10));
+                Thread.Sleep(TimeSpan.FromSeconds(1)); // Temp - Debug
             }
         }
 
@@ -82,9 +85,10 @@ namespace Meeting_Signal
         /// <remarks>
         /// It does this using a get request
         /// </remarks>
-        public static async void UpdateSignal(Color signalColour, bool usingWebcam)
+        public static async Task UpdateSignalAsync(Color signalColour, bool usingWebcam)
         {
-            LedColourPanel.BackColor = signalColour;
+            Program.SetColour.Invoke(signalColour);
+            var IP = Program.GetIP.Invoke();
 
             //// Temp - Add get request
             //var url = $"http://{IPTextBox.Text}/";
@@ -155,7 +159,7 @@ namespace Meeting_Signal
                 if (inMeeting)
                 {
                     if (usingWebcam) return both;
-                    
+
                     return onlyMicrophone;
                 }
 
