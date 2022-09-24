@@ -35,11 +35,12 @@
             this.raspberryPiIPTextBox = new System.Windows.Forms.TextBox();
             this.notifyIcon = new System.Windows.Forms.NotifyIcon(this.components);
             this.label2 = new System.Windows.Forms.Label();
+            this.notConnectedLabel = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // ledColourPanel
             // 
-            this.ledColourPanel.BackColor = System.Drawing.Color.Gold;
+            this.ledColourPanel.BackColor = System.Drawing.Color.Chartreuse;
             this.ledColourPanel.Location = new System.Drawing.Point(187, 94);
             this.ledColourPanel.Name = "ledColourPanel";
             this.ledColourPanel.Size = new System.Drawing.Size(72, 31);
@@ -80,11 +81,23 @@
             this.label2.TabIndex = 2;
             this.label2.Text = "IP:";
             // 
+            // notConnectedLabel
+            // 
+            this.notConnectedLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 10.2F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.notConnectedLabel.ForeColor = System.Drawing.SystemColors.ControlDarkDark;
+            this.notConnectedLabel.Location = new System.Drawing.Point(94, 27);
+            this.notConnectedLabel.Name = "notConnectedLabel";
+            this.notConnectedLabel.Size = new System.Drawing.Size(165, 20);
+            this.notConnectedLabel.TabIndex = 3;
+            this.notConnectedLabel.Text = "Not Connected!";
+            this.notConnectedLabel.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(291, 128);
+            this.Controls.Add(this.notConnectedLabel);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.raspberryPiIPTextBox);
             this.Controls.Add(this.label1);
@@ -106,6 +119,7 @@
         public System.Windows.Forms.TextBox raspberryPiIPTextBox;
         public System.Windows.Forms.Panel ledColourPanel;
         private System.Windows.Forms.Label label2;
+        public System.Windows.Forms.Label notConnectedLabel;
     }
 }
 

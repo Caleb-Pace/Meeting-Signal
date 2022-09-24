@@ -23,8 +23,11 @@ namespace Meeting_Signal
             Timeout = new TimeSpan(0, 0, 2), // 2 Seconds
         };
 
-        // Form objects
+        private static bool connected = false;
+        private static string ip = "";
+
         public static Form1 Form { get; set; }
+
 
 
         /// <summary>
@@ -35,40 +38,58 @@ namespace Meeting_Signal
             Program.SetColour = new Action<Color>(Form.SetLedColour);
             Program.GetIP = new Func<string>(Form.GetIP);
 
+            var previousIP = "";
+
             while (true)
             {
-                // Check if in meeting
-                if (DetectUsage("microphone"))
+                // Wait for IP
+                ip = Program.GetIP.Invoke();
+                if (!string.IsNullOrWhiteSpace(ip))
                 {
-                    var previousUsingWebcam = false;
-                    var update = true;
-
-                    while (true)
+                    // Update previous and test IP
+                    if (previousIP != ip)
                     {
-                        // Has using webcam state changed
-                        var usingWebcam = DetectUsage("webcam");
-                        if (usingWebcam != previousUsingWebcam)
+                        previousIP = ip;
+                        UpdateSignalAsync(SignalColour.off, false).GetAwaiter().GetResult();
+                    }
+
+                    if (connected)
+                    {
+                        // Check if in meeting
+                        if (DetectUsage("microphone"))
                         {
-                            previousUsingWebcam = usingWebcam;
-                            update = true;
-                        } // Update required
+                            var previousUsingWebcam = false;
+                            var update = true;
 
-                        // Update signal
-                        if (update)
-                        {
-                            UpdateSignalAsync(SignalColour.GetColour(true, usingWebcam), usingWebcam).GetAwaiter().GetResult();
-                            update = false;
-                        }
+                            // Update signal loop
+                            while (true)
+                            {
+                                // Has using webcam state changed
+                                var usingWebcam = DetectUsage("webcam");
+                                if (usingWebcam != previousUsingWebcam)
+                                {
+                                    previousUsingWebcam = usingWebcam;
+                                    update = true;
+                                } // Update required
 
-                        // Check for state change delay
-                        Thread.Sleep(TimeSpan.FromSeconds(10));
+                                // Update signal
+                                if (update)
+                                {
+                                    UpdateSignalAsync(SignalColour.GetColour(true, usingWebcam), usingWebcam).GetAwaiter().GetResult();
+                                    update = false;
+                                }
 
-                        // Check if still in the meeting
-                        if (!DetectUsage("microphone")) break; // Exit out of while loop
-                    } // Update signal loop
+                                // Check for state change delay
+                                Thread.Sleep(TimeSpan.FromSeconds(10));
 
-                    UpdateSignalAsync(SignalColour.off, false).GetAwaiter().GetResult();
-                } // Meeting detected!
+                                // Check if still in the meeting
+                                if (!DetectUsage("microphone")) break; // Exit out of while loop
+                            }
+
+                            UpdateSignalAsync(SignalColour.off, false).GetAwaiter().GetResult();
+                        } // Meeting detected!
+                    }
+                }
 
                 // Check for meeting delay
                 Thread.Sleep(TimeSpan.FromSeconds(10));
@@ -83,22 +104,21 @@ namespace Meeting_Signal
         /// </remarks>
         public static async Task UpdateSignalAsync(Color signalColour, bool usingWebcam)
         {
-            // Get IP
-            var IP = Program.GetIP.Invoke();
-            if (string.IsNullOrWhiteSpace(IP)) return; // Check if IP is blank
-
             // Form the url
             var colour = $"{signalColour.R:x2}{signalColour.G:x2}{signalColour.B:x2}";
-            var url = $"http://{IP}/?rgb={colour}";
+            var url = $"http://{ip}/?rgb={colour}";
             if (signalColour != SignalColour.off) url += $"&lcd_line_1=/@s/@s/@sMic:/@sUnknown&lcd_line_2=Webcam:/@s{(usingWebcam ? "On" : "Off")}"; // Add LCD data
 
             // Send request
             try
             {
                 await httpClient.GetAsync(url);
+
+                connected = true; // Request successful
             }
-            catch (UriFormatException) { return; } // Invalid URL
-            catch (TaskCanceledException) { return; } // Couldn't reach URL
+            catch (UriFormatException) { signalColour = SignalColour.waiting; }    // Invalid URL
+            catch (TaskCanceledException) { signalColour = SignalColour.waiting; } // Couldn't reach URL
+            catch (HttpRequestException) { signalColour = SignalColour.waiting; }  // URL doesn't exist
 
             // Update GUI
             Program.SetColour.Invoke(signalColour);
@@ -148,11 +168,12 @@ namespace Meeting_Signal
         /// <summary>
         /// Signal colour reference
         /// </summary>
-        private static class SignalColour
+        public static class SignalColour
         {
-            public static readonly Color off = Color.FromArgb(255, 0, 0, 0);                      // Black (Off)
-            private static readonly Color onlyMicrophone = Color.FromArgb(255, 255, 0, 0);        // Red
-            private static readonly Color both = Color.FromArgb(255, 255, 0, 255);                // Purple
+            public static readonly Color waiting = Color.Chartreuse;
+            public static readonly Color off = Color.Black;
+            private static readonly Color onlyMicrophone = Color.Red;
+            private static readonly Color both = Color.Fuchsia;
 
 
             /// <summary>

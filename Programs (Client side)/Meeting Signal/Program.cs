@@ -8,7 +8,6 @@ namespace Meeting_Signal
     internal static class Program
     {
         public static Action<Color> SetColour;
-        public static Action<string> SetIP;
         public static Func<string> GetIP;
 
 

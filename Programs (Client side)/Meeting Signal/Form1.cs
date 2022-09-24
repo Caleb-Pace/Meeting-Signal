@@ -28,7 +28,14 @@ namespace Meeting_Signal
             notifyIcon.Visible = false;
         }
 
-        public void SetLedColour(System.Drawing.Color newColour) => ledColourPanel.BackColor = newColour;
+        public void SetLedColour(System.Drawing.Color newColour)
+        {
+            ledColourPanel.BackColor = newColour;
+            notConnectedLabel.Invoke((MethodInvoker)delegate
+            {
+                notConnectedLabel.Visible = newColour == MeetingDetection.SignalColour.waiting;
+            }); // Update visibility
+        }
         public string GetIP() => raspberryPiIPTextBox.Text;
     }
 }
