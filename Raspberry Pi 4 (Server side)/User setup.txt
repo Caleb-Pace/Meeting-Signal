@@ -1,4 +1,7 @@
-sudo cp /etc/sudoers /root/sudoers.bak
-sudo nano /etc/sudoers
-Add lines to users section:
-"www-data ALL = NOPASSWD: /usr/bin/python output.py, /bin/sh ./start-pigpiod.sh"
+> sudo cp /etc/sudoers /root/sudoers.bak
+> sudo nano /etc/sudoers
+
+Add line to users section:
+"
+www-data ALL = NOPASSWD: /usr/bin/python
+"

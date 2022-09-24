@@ -23,8 +23,6 @@ function Sanitise($input) {
 }
 
 
-shell_exec("sudo sh ./start-pigpiod.sh"); // Start pigpio Daemon for Hardware PWM
-
 //=/ Parameter
 $rgb = empty($_GET["rgb"]) ? "000000" : $_GET["rgb"]; // RGB LED (Empty => off)
 $lcd_line_1 = empty($_GET["lcd_line_1"]) ? "/@0" : $_GET["lcd_line_1"]; // LCD character display line 1

@@ -1,0 +1,9 @@
+> sudo cp /etc/rc.local /root/rc.local.bak
+> sudo nano /etc/rc.local
+
+Add lines before "exit 0":
+"
+
+# Run startup script for Meeting Signal
+(sleep 15; bash /var/www/html/startup.sh)&
+"
