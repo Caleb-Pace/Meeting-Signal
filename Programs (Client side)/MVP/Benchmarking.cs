@@ -5,17 +5,18 @@ namespace MVP
 {
     public class Benchmarking
     {
+        // Comparing two process search methods
         [MemoryDiagnoser]
         public class Detection
         {
             public static readonly Dictionary<string, string> find = new()
             {
                 { "Income Splitter", "IS" },
-            };
+            }; // Program that is running
             public static readonly Dictionary<string, string> noFind = new()
             {
                 { "Decome Splitter", "DS" },
-            };
+            }; // Program that isn't running
 
             [Benchmark]
             public string? SearchAll_Find()
@@ -65,13 +66,14 @@ namespace MVP
         }
 
 
+        // Comparing property vs method
         [MemoryDiagnoser]
         public class Communication
         {
-            public static bool _signal_PT = false;
-            public static bool _signal_PF = false;
-            public static bool _signal_MT = false;
-            public static bool _signal_MF = false;
+            public static bool _signal_PT = false; // Send request on property update (value: true)
+            public static bool _signal_PF = false; // Send request on property update (value: false)
+            public static bool _signal_MT = false; // Update var then send request (value: true)
+            public static bool _signal_MF = false; // Update var then send request (value: false)
             public static bool Signal_T
             {
                 set
