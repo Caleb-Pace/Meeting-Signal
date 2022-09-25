@@ -80,7 +80,7 @@ namespace Meeting_Signal
                                 }
 
                                 // Check for state change delay
-                                Thread.Sleep(TimeSpan.FromSeconds(10));
+                                Thread.Sleep(TimeSpan.FromSeconds(5));
 
                                 // Check if still in the meeting
                                 if (!DetectUsage("microphone")) break; // Exit out of while loop
