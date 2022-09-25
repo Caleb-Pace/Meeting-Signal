@@ -1,7 +1,7 @@
 <?php
 
 // Sanitises input and prepares it for shell_exec
-function Sanitise($input) {
+function sanitiseInput($input) {
   $input = str_replace(" ", "/@s", $input);   // Spaces
   $input = str_replace("\\", "\\\\", $input); // Escape character
   $input = str_replace(";", "\\;", $input);   // Command separator
@@ -29,9 +29,9 @@ $lcd_line_1 = empty($_GET["lcd_line_1"]) ? "/@0" : $_GET["lcd_line_1"]; // LCD c
 $lcd_line_2 = empty($_GET["lcd_line_2"]) ? "/@0" : $_GET["lcd_line_2"]; // LCD character display line 2
 
 //=/ Sanitise input
-$rgb = Sanitise($rgb);
-$lcd_line_1 = Sanitise($lcd_line_1);
-$lcd_line_2 = Sanitise($lcd_line_2);
+$rgb = sanitiseInput($rgb);
+$lcd_line_1 = sanitiseInput($lcd_line_1);
+$lcd_line_2 = sanitiseInput($lcd_line_2);
 
 //=/ Run output.py and show response
 $command = "sudo python output.py ".$rgb." ".$lcd_line_1." ".$lcd_line_2;

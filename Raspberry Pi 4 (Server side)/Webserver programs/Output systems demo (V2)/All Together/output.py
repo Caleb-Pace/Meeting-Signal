@@ -1,5 +1,6 @@
 #!/usr/bin/env python2.7
-import sys, pigpio
+import sys
+import pigpio
 import RPi.GPIO as GPIO
 from rpi_lcd import LCD
 
