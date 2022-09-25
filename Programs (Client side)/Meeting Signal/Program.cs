@@ -23,9 +23,12 @@ namespace Meeting_Signal
             // Setup and start meeting listener
             var form = new Form1();
             MeetingDetection.Form = form;
-            new Thread(new ThreadStart(MeetingDetection.MeetingListener)).Start(); // Start meeting the listener in a different thread
+            var detectionThread = new Thread(new ThreadStart(MeetingDetection.MeetingListener));
+            detectionThread.Start(); // Start meeting the listener in a different thread
 
             Application.Run(form);
+
+            detectionThread.Abort(); // Stop thread
         }
     }
 }
