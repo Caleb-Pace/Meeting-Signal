@@ -8,6 +8,8 @@ namespace Meeting_Signal
     internal static class Program
     {
         public static Action<Color> SetColour;
+        public static Action<bool> WebcamStatus;
+        public static Action<bool> MeetingStatus;
         public static Func<string> GetIP;
 
 

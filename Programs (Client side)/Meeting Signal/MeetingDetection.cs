@@ -36,6 +36,8 @@ namespace Meeting_Signal
         public static void MeetingListener()
         {
             Program.SetColour = new Action<Color>(Form.SetLedColour);
+            Program.MeetingStatus = new Action<bool>(Form.SetMeetingStatus);
+            Program.WebcamStatus = new Action<bool>(Form.SetWebcamStatus);
             Program.GetIP = new Func<string>(Form.GetIP);
 
             var previousIP = "";
@@ -122,6 +124,8 @@ namespace Meeting_Signal
 
             // Update GUI
             Program.SetColour.Invoke(signalColour);
+            Program.MeetingStatus.Invoke(signalColour != SignalColour.waiting && signalColour != SignalColour.off);
+            Program.WebcamStatus.Invoke(usingWebcam);
         }
 
 
